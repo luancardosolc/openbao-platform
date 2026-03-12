@@ -1,0 +1,64 @@
+---
+- name: Harden OpenBao host
+  hosts: openbao
+  become: true
+  vars_files:
+    - ../group_vars/openbao.yml
+  tasks:
+    - name: Install security packages
+      ansible.builtin.apt:
+        name:
+          - ufw
+          - fail2ban
+        state: present
+        update_cache: true
+
+    - name: Disable SSH password authentication
+      ansible.builtin.lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: "^#?PasswordAuthentication"
+        line: "PasswordAuthentication no"
+        validate: "sshd -t -f %s"
+
+    - name: Disable SSH root login
+      ansible.builtin.lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: "^#?PermitRootLogin"
+        line: "PermitRootLogin no"
+        validate: "sshd -t -f %s"
+
+    - name: Force key authentication
+      ansible.builtin.lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: "^#?PubkeyAuthentication"
+        line: "PubkeyAuthentication yes"
+        validate: "sshd -t -f %s"
+
+    - name: Restart SSH
+      ansible.builtin.service:
+        name: ssh
+        state: restarted
+
+    - name: Configure UFW default policy
+      community.general.ufw:
+        state: enabled
+        policy: deny
+        direction: incoming
+
+    - name: Allow SSH
+      community.general.ufw:
+        rule: allow
+        port: "22"
+        proto: tcp
+
+    - name: Allow OpenBao API
+      community.general.ufw:
+        rule: allow
+        port: "{{ openbao_ui_port }}"
+        proto: tcp
+
+    - name: Ensure fail2ban is enabled
+      ansible.builtin.service:
+        name: fail2ban
+        enabled: true
+        state: started

@@ -1,0 +1,14 @@
+{
+  "name": "openbao-platform",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Open-source infrastructure platform for OpenBao on a Hetzner VPS",
+  "scripts": {
+    "lint": "make lint",
+    "test": "make test",
+    "test:all": "make test",
+    "validate": "make validate",
+    "deploy": "make deploy",
+    "destroy": "make destroy"
+  }
+}

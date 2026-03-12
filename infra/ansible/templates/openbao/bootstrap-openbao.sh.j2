@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+bootstrap_file="/opt/openbao/bootstrap/bootstrap.json"
+audit_file="/opt/openbao/logs/audit.log"
+
+if docker exec openbao bao status >/dev/null 2>&1; then
+  status_json="$(docker exec openbao bao status -format=json)"
+  initialized="$(python3 -c 'import json,sys; print(json.load(sys.stdin)["initialized"])' <<<"${status_json}")"
+else
+  initialized="false"
+fi
+
+if [[ "${initialized}" != "true" ]]; then
+  docker exec openbao bao operator init -format=json > "${bootstrap_file}"
+fi
+
+unseal_key="$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1]))["unseal_keys_b64"][0])' "${bootstrap_file}")"
+root_token="$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1]))["root_token"])' "${bootstrap_file}")"
+
+docker exec openbao bao operator unseal "${unseal_key}" >/dev/null
+docker exec -e BAO_TOKEN="${root_token}" openbao bao audit enable file file_path="${audit_file}" >/dev/null 2>&1 || true
+docker exec -e BAO_TOKEN="${root_token}" openbao bao secrets enable -path=kv kv-v2 >/dev/null 2>&1 || true
+docker cp /opt/openbao/config/platform-policy.hcl openbao:/tmp/platform-policy.hcl
+docker exec -e BAO_TOKEN="${root_token}" openbao bao policy write platform-admin /tmp/platform-policy.hcl >/dev/null 2>&1 || true
+openssl enc -aes-256-cbc -salt -pbkdf2 -in "${bootstrap_file}" -out "${bootstrap_file}.enc" -pass pass:openbao-bootstrap >/dev/null 2>&1

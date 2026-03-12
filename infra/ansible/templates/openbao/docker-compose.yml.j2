@@ -1,0 +1,27 @@
+services:
+  openbao:
+    image: {{ openbao_image }}
+    container_name: openbao
+    command: server -config=/openbao/config/openbao.hcl
+    user: "{{ openbao_container_user }}"
+    restart: unless-stopped
+    cap_drop:
+      - ALL
+    cap_add:
+      - IPC_LOCK
+    ports:
+      - "{{ openbao_ui_port }}:{{ openbao_ui_port }}"
+      - "{{ openbao_cluster_port }}:{{ openbao_cluster_port }}"
+    volumes:
+      - /opt/openbao/config:/openbao/config
+      - /opt/openbao/data:/openbao/data
+      - /opt/openbao/logs:/openbao/logs
+      - /opt/openbao/tls:/openbao/tls
+      - /opt/openbao/bootstrap:/openbao/bootstrap
+    networks:
+      - openbao_net
+
+networks:
+  openbao_net:
+    driver: bridge
+    internal: false

@@ -1,0 +1,26 @@
+version: "3"
+
+tasks:
+  bootstrap:
+    cmds:
+      - ./scripts/bootstrap.sh
+
+  lint:
+    cmds:
+      - make lint
+
+  test:
+    cmds:
+      - make test
+
+  validate:
+    cmds:
+      - make validate
+
+  deploy:
+    cmds:
+      - make deploy
+
+  destroy:
+    cmds:
+      - make destroy

@@ -1,0 +1,15 @@
+path "sys/health" {
+  capabilities = ["read"]
+}
+
+path "sys/mounts" {
+  capabilities = ["read"]
+}
+
+path "sys/policies/acl/*" {
+  capabilities = ["create", "read", "update", "delete", "list"]
+}
+
+path "kv/*" {
+  capabilities = ["create", "read", "update", "delete", "list"]
+}

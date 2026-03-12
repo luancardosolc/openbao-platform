@@ -1,0 +1,96 @@
+---
+- name: Deploy OpenBao
+  hosts: openbao
+  become: true
+  vars_files:
+    - ../group_vars/openbao.yml
+  tasks:
+    - name: Create base directories
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: directory
+        owner: root
+        group: root
+        mode: "0750"
+      loop:
+        - /opt/openbao
+        - /opt/openbao/config
+        - /opt/openbao/data
+        - /opt/openbao/logs
+        - /opt/openbao/tls
+        - /opt/openbao/bootstrap
+
+    - name: Create non-root service account
+      ansible.builtin.user:
+        name: "{{ openbao_container_user }}"
+        system: true
+        shell: /usr/sbin/nologin
+        create_home: false
+        uid: 10000
+
+    - name: Generate TLS private key
+      community.crypto.openssl_privatekey:
+        path: /opt/openbao/tls/openbao.key
+        size: 4096
+        mode: "0600"
+
+    - name: Generate TLS certificate signing request
+      community.crypto.openssl_csr:
+        path: /opt/openbao/tls/openbao.csr
+        privatekey_path: /opt/openbao/tls/openbao.key
+        common_name: "{{ openbao_tls_cn }}"
+        subject_alt_name:
+          - "DNS:{{ openbao_tls_cn }}"
+          - "IP:{{ ansible_host }}"
+
+    - name: Generate self-signed certificate
+      community.crypto.x509_certificate:
+        path: /opt/openbao/tls/openbao.crt
+        privatekey_path: /opt/openbao/tls/openbao.key
+        csr_path: /opt/openbao/tls/openbao.csr
+        provider: selfsigned
+        selfsigned_not_after: "+365d"
+
+    - name: Render OpenBao configuration
+      ansible.builtin.template:
+        src: ../templates/openbao/openbao.hcl.j2
+        dest: /opt/openbao/config/openbao.hcl
+        mode: "0640"
+
+    - name: Render OpenBao policy
+      ansible.builtin.template:
+        src: ../templates/openbao/platform-policy.hcl.j2
+        dest: /opt/openbao/config/platform-policy.hcl
+        mode: "0640"
+
+    - name: Render Docker Compose definition
+      ansible.builtin.template:
+        src: ../templates/openbao/docker-compose.yml.j2
+        dest: /opt/openbao/docker-compose.yml
+        mode: "0640"
+
+    - name: Start OpenBao stack
+      community.docker.docker_compose_v2:
+        project_src: /opt/openbao
+        state: present
+
+    - name: Wait for OpenBao health endpoint
+      ansible.builtin.uri:
+        url: "https://{{ ansible_host }}:{{ openbao_ui_port }}/v1/sys/health"
+        validate_certs: false
+        status_code: [200, 429, 472, 473, 501, 503]
+      register: openbao_health
+      retries: 20
+      delay: 5
+      until: openbao_health.status in [200, 429, 472, 473, 501, 503]
+
+    - name: Copy bootstrap helper
+      ansible.builtin.template:
+        src: ../templates/openbao/bootstrap-openbao.sh.j2
+        dest: /opt/openbao/bootstrap/bootstrap-openbao.sh
+        mode: "0700"
+
+    - name: Run bootstrap helper
+      ansible.builtin.command: /opt/openbao/bootstrap/bootstrap-openbao.sh
+      args:
+        creates: /opt/openbao/bootstrap/bootstrap.json

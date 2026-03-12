@@ -1,0 +1,49 @@
+---
+name: Deploy
+
+"on":
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      PLATFORM_PROVIDER: ${{ secrets.PLATFORM_PROVIDER }}
+      PLATFORM_PROJECT_NAME: openbao-platform
+      PLATFORM_ENVIRONMENT: prod
+      PLATFORM_HETZNER_TOKEN: ${{ secrets.PLATFORM_HETZNER_TOKEN }}
+      PLATFORM_AWS_REGION: ${{ secrets.PLATFORM_AWS_REGION }}
+      PLATFORM_AWS_ACCESS_KEY_ID: ${{ secrets.PLATFORM_AWS_ACCESS_KEY_ID }}
+      PLATFORM_AWS_SECRET_ACCESS_KEY: >-
+        ${{ secrets.PLATFORM_AWS_SECRET_ACCESS_KEY }}
+      PLATFORM_DO_TOKEN: ${{ secrets.PLATFORM_DO_TOKEN }}
+      PLATFORM_HETZNER_SSH_KEY_IDS: >-
+        ${{ secrets.PLATFORM_HETZNER_SSH_KEY_IDS }}
+      PLATFORM_SSH_PRIVATE_KEY: /tmp/id_ed25519
+      PLATFORM_SSH_PUBLIC_KEY: /tmp/id_ed25519.pub
+      PLATFORM_SSH_USER: ubuntu
+      PLATFORM_ALLOWED_SSH_CIDRS: '["0.0.0.0/0"]'
+      PLATFORM_ALLOWED_API_CIDRS: '["0.0.0.0/0"]'
+      PLATFORM_HETZNER_LOCATION: nbg1
+      PLATFORM_HETZNER_SERVER_TYPE: cpx21
+      PLATFORM_HETZNER_IMAGE: ubuntu-24.04
+      PLATFORM_DOMAIN: ${{ secrets.PLATFORM_DOMAIN }}
+      PLATFORM_OPENBAO_TLS_CN: ${{ secrets.PLATFORM_DOMAIN }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: opentofu/setup-opentofu@v1
+      - name: Install Ansible
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ansible
+          ansible-galaxy collection install \
+            community.crypto community.docker community.general
+      - name: Write SSH key
+        run: |
+          printf '%s' "${{ secrets.PLATFORM_SSH_PRIVATE_KEY }}" \
+            > /tmp/id_ed25519
+          printf '%s' "${{ secrets.PLATFORM_SSH_PUBLIC_KEY }}" \
+            > /tmp/id_ed25519.pub
+          chmod 600 /tmp/id_ed25519 /tmp/id_ed25519.pub
+      - name: Deploy
+        run: make deploy
