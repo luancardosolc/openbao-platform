@@ -30,7 +30,7 @@ jobs:
       PLATFORM_DOMAIN: ${{ secrets.PLATFORM_DOMAIN }}
       PLATFORM_OPENBAO_TLS_CN: ${{ secrets.PLATFORM_DOMAIN }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: opentofu/setup-opentofu@v1
       - name: Install Ansible
         run: |
