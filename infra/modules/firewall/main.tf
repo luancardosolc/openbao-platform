@@ -28,9 +28,9 @@ resource "hcloud_firewall" "this" {
 }
 
 resource "hcloud_firewall_attachment" "this" {
-  count       = var.provider_name == "hetzner" && length(var.hcloud_server_ids) > 0 ? 1 : 0
+  count       = var.provider_name == "hetzner" ? 1 : 0
   firewall_id = hcloud_firewall.this[0].id
-  server_ids  = var.hcloud_server_ids
+  server_ids  = compact(var.hcloud_server_ids)
 }
 
 resource "aws_security_group" "this" {

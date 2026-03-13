@@ -26,9 +26,13 @@ terraform {
 }
 
 provider "aws" {
-  region     = var.aws_region
-  access_key = var.aws_access_key_id != "" ? var.aws_access_key_id : null
-  secret_key = var.aws_secret_access_key != "" ? var.aws_secret_access_key : null
+  region                      = var.aws_region
+  access_key                  = var.cloud_provider == "aws" ? var.aws_access_key_id : "mock-access-key"
+  secret_key                  = var.cloud_provider == "aws" ? var.aws_secret_access_key : "mock-secret-key"
+  skip_credentials_validation = var.cloud_provider != "aws"
+  skip_metadata_api_check     = var.cloud_provider != "aws"
+  skip_requesting_account_id  = var.cloud_provider != "aws"
+  skip_region_validation      = var.cloud_provider != "aws"
 }
 
 provider "digitalocean" {

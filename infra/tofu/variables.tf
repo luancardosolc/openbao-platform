@@ -64,7 +64,7 @@ variable "server_image" {
 variable "server_size" {
   type        = string
   description = "Instance size identifier."
-  default     = "cpx21"
+  default     = "cpx22"
 }
 
 variable "hetzner_token" {
