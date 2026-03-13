@@ -7,7 +7,7 @@ output "public_ip" {
 output "private_ip" {
   value = var.provider_name == "hetzner" ? one([
     for network in hcloud_server.this[0].network : network.ip
-  ]) : (
+    ]) : (
     var.provider_name == "aws" ? aws_instance.this[0].private_ip : digitalocean_droplet.this[0].ipv4_address_private
   )
 }

@@ -51,6 +51,7 @@ resource "digitalocean_droplet" "this" {
 
 locals {
   cloud_init = templatefile("${path.module}/user-data.tftpl", {
-    ssh_user = var.ssh_user
+    ssh_user       = var.ssh_user
+    ssh_public_key = var.ssh_public_key
   })
 }

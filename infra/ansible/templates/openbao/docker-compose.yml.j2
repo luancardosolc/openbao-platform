@@ -2,19 +2,23 @@ services:
   openbao:
     image: {{ openbao_image }}
     container_name: openbao
-    command: server -config=/openbao/config/openbao.hcl
-    user: "{{ openbao_container_user }}"
+    command: server
     restart: unless-stopped
     cap_drop:
       - ALL
     cap_add:
+      - CHOWN
       - IPC_LOCK
+      - SETGID
+      - SETUID
     ports:
       - "{{ openbao_ui_port }}:{{ openbao_ui_port }}"
       - "{{ openbao_cluster_port }}:{{ openbao_cluster_port }}"
+    environment:
+      SKIP_CHOWN: "true"
     volumes:
       - /opt/openbao/config:/openbao/config
-      - /opt/openbao/data:/openbao/data
+      - /opt/openbao/data:/openbao/file
       - /opt/openbao/logs:/openbao/logs
       - /opt/openbao/tls:/openbao/tls
       - /opt/openbao/bootstrap:/openbao/bootstrap

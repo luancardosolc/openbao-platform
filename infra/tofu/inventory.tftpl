@@ -1,2 +1,2 @@
 [openbao]
-${host} ansible_user=${user} ansible_ssh_private_key_file=${key_path}
+${host} ansible_user=${user} ansible_ssh_private_key_file=${key_path} ansible_ssh_common_args='-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null'

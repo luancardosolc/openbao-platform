@@ -1,6 +1,8 @@
 ---
 openbao_operator_user: ubuntu
 openbao_container_user: openbao
+openbao_container_uid: "100"
+openbao_container_gid: "1000"
 openbao_image: "openbao/openbao:2.2.0"
 openbao_ui_port: 8200
 openbao_cluster_port: 8201
