@@ -30,3 +30,4 @@ Local quality checks run through containers where practical so the project remai
 - [docs/disaster-recovery.md](docs/disaster-recovery.md)
 - [docs/backup-strategy.md](docs/backup-strategy.md)
 - [docs/security.md](docs/security.md)
+- [docs/workstation-bootstrap.md](docs/workstation-bootstrap.md)
