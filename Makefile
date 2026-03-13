@@ -1,7 +1,7 @@
 SHELL := /bin/bash
 ROOT_DIR := $(shell pwd)
 
-.PHONY: bootstrap lint test validate deploy destroy backup restore fmt
+.PHONY: bootstrap lint test validate deploy destroy backup restore fmt smoke
 
 bootstrap:
 	./scripts/bootstrap.sh
@@ -23,6 +23,9 @@ test:
 	./tests/infra-tests.sh
 	./tests/security-tests.sh
 	./tests/deployment-tests.sh
+
+smoke:
+	./scripts/smoke-openbao.sh
 
 deploy:
 	./scripts/deploy.sh

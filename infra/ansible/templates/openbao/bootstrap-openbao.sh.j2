@@ -75,8 +75,7 @@ docker exec -e BAO_ADDR="${bao_addr}" -e BAO_SKIP_VERIFY=true \
 docker exec -e BAO_ADDR="${bao_addr}" -e BAO_SKIP_VERIFY=true \
   -e BAO_TOKEN="${root_token}" openbao \
   bao secrets enable -path=kv kv-v2 >/dev/null 2>&1 || true
-docker cp /opt/openbao/config/platform-policy.hcl openbao:/tmp/platform-policy.hcl
-docker exec -e BAO_ADDR="${bao_addr}" -e BAO_SKIP_VERIFY=true \
+docker exec -i -e BAO_ADDR="${bao_addr}" -e BAO_SKIP_VERIFY=true \
   -e BAO_TOKEN="${root_token}" openbao \
-  bao policy write platform-admin /tmp/platform-policy.hcl >/dev/null 2>&1 || true
+  bao policy write platform-admin - </opt/openbao/config/platform-policy.hcl >/dev/null
 openssl enc -aes-256-cbc -salt -pbkdf2 -in "${bootstrap_file}" -out "${bootstrap_file}.enc" -pass pass:openbao-bootstrap >/dev/null 2>&1
