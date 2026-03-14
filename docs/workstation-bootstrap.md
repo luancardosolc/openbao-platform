@@ -114,6 +114,26 @@ This repository now provides a simple helper:
 
 The script prints shell-friendly exports for single-env-var secret paths, prints both Trello exports together, and pretty JSON for metadata paths.
 
+## Recommended Local Runtime Pattern
+
+For Codex workstation bootstrap, keep OpenBao as the source of truth and use small local files only as runtime inputs for shell startup.
+
+Current pattern on the reference Mac:
+
+- `~/.config/codex/github_pat_pessoal`
+- `~/.config/codex/github_pat_cliente`
+- `~/.config/codex/github_env.sh`
+- `~/.config/codex/trello_api_key`
+- `~/.config/codex/trello_token`
+- `~/.config/codex/trello_env.sh`
+
+The shell loads these with:
+
+- `source ~/.config/codex/github_env.sh`
+- `[ -f ~/.config/codex/trello_env.sh ] && source ~/.config/codex/trello_env.sh`
+
+This keeps `~/.codex/config.toml` free of inline Trello credentials while preserving a simple startup flow for Codex and MCP servers.
+
 ## Cross-Platform Recovery
 
 When rebuilding on another machine:
