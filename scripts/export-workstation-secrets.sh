@@ -18,6 +18,8 @@ Usage:
   ./scripts/export-workstation-secrets.sh github-client
   ./scripts/export-workstation-secrets.sh postman
   ./scripts/export-workstation-secrets.sh trello
+  ./scripts/export-workstation-secrets.sh figma-personal
+  ./scripts/export-workstation-secrets.sh figma-ace
   ./scripts/export-workstation-secrets.sh ssh-metadata
   ./scripts/export-workstation-secrets.sh codex-metadata
 EOF
@@ -29,6 +31,8 @@ case "${TARGET}" in
   github-client) path="kv/data/workstation/mcp/github-client" ;;
   postman) path="kv/data/workstation/mcp/postman" ;;
   trello) path="kv/data/workstation/mcp/trello" ;;
+  figma-personal) path="kv/data/workstation/mcp/figma-personal" ;;
+  figma-ace) path="kv/data/workstation/mcp/figma-ace" ;;
   ssh-metadata) path="kv/data/workstation/ssh/metadata" ;;
   codex-metadata) path="kv/data/workstation/codex/metadata" ;;
   *)
