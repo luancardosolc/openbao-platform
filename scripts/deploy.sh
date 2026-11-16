@@ -1,6 +1,12 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+if [[ "${PLATFORM_CONFIRM_GENERIC_DEPLOY:-}" != "I_UNDERSTAND_THIS_CAN_CREATE_OR_REPLACE_A_VPS" ]]; then
+  echo "Deployment blocked: this generic workflow can create or replace cloud resources and does not match the live Hetzner host." >&2
+  echo "Reconcile the inventory, firewall, SSH identity, and state before explicitly authorizing an isolated deployment." >&2
+  exit 64
+fi
+
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 TF_DIR="${ROOT_DIR}/infra/tofu"
 ANSIBLE_DIR="${ROOT_DIR}/infra/ansible"

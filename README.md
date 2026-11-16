@@ -12,12 +12,11 @@ Open-source infrastructure platform to deploy a hardened single-node OpenBao clu
 
 ## Quick Start
 
-1. Copy `.env.example` to `.env` and fill in provider and deployment values.
-2. Run `make bootstrap`.
-3. Run `make lint`.
-4. Run `make test`.
-5. Run `make deploy`.
-6. Run `make smoke` with `OPENBAO_ADDR` set after deployment.
+1. Read [ops/README.md](ops/README.md) and the backup/DR status before operating any host.
+2. Run the offline test suite with `make test` in an environment with Bash.
+3. For the current Hetzner host, run only the read-only check: `python ops/hetzner_health.py`.
+
+The live host is not managed by this generic provisioning workflow yet. `make deploy` and `make destroy` are blocked by default; do not set their explicit confirmation gates for the production host. The old Ansible, backup, and restore examples do not match the live configuration.
 
 ## Tooling Strategy
 
@@ -25,6 +24,7 @@ Local quality checks run through containers where practical so the project remai
 
 ## Operations Docs
 
+- [ops/README.md](ops/README.md) — read-only checks for the existing Hetzner host
 - [docs/operator-access.md](docs/operator-access.md)
 - [docs/runbook.md](docs/runbook.md)
 - [docs/disaster-recovery.md](docs/disaster-recovery.md)
