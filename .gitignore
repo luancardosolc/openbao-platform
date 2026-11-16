@@ -23,3 +23,19 @@ node_modules/
 dist/
 coverage/
 .wrangler/
+
+# segredos (nunca versionar)
+.env
+.env.*
+!.env.example
+*.dpapi
+*.secret
+*.secrets.json
+secrets*.json
+*-keys*.json
+bootstrap*.json
+bootstrap*.json.enc
+new-keys.json
+hzroot-*
+*.pre-redact.bak
+*.redact.tmp
