@@ -12,7 +12,7 @@ try {
     'b64key44'  = '(?<![A-Za-z0-9+/])[A-Za-z0-9+/]{43}=(?![A-Za-z0-9+/=])'
     'hex66'     = '(?<![0-9a-fA-F])[0-9a-fA-F]{66}(?![0-9a-fA-F])'
     'vaulttok'  = '(?<![A-Za-z0-9.])(?:hv[sbr]|s)\.[A-Za-z0-9_-]{20,}'
-    'password'  = '(?i)(?<![A-Za-z$])pass(?:word|wd)?\s*[=:]\s*["'']?(?![\$%<{\[(]|\*\*\*|REDACTED|example|changeme|xxx)[^\s"'',;]{6,}'
+    'password'  = '(?i)(?<![A-Za-z$])pass(?:word|wd)?\s*[=:]\s*["'']?(?![\$%<{\[(]|[A-Z][a-z]+-[A-Z][A-Za-z]+\b|\*\*\*|REDACTED|example|changeme|xxx)[^\s"'',;]{6,}'
     'pem'       = '-----BEGIN [A-Z ]*PRIVATE KEY-----'
     'ghtoken'   = '\b(?:ghp|gho|ghs|github_pat)_[A-Za-z0-9_]{20,}'
     'bwsession' = '(?i)BW_SESSION\s*=\s*["'']?[A-Za-z0-9+/=]{40,}'
