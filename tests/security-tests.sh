@@ -11,3 +11,5 @@ grep -q '/opt/openbao/data:/openbao/file' "${ROOT_DIR}/infra/ansible/templates/o
 grep -q 'openbao_container_uid: "100"' "${ROOT_DIR}/infra/ansible/group_vars/openbao.yml"
 grep -q 'openbao_container_gid: "1000"' "${ROOT_DIR}/infra/ansible/group_vars/openbao.yml"
 grep -q "audit enable file" "${ROOT_DIR}/infra/ansible/templates/openbao/bootstrap-openbao.sh.j2"
+grep -q "PLATFORM_CONFIRM_GENERIC_DEPLOY" "${ROOT_DIR}/scripts/deploy.sh"
+grep -q "PLATFORM_CONFIRM_DESTROY" "${ROOT_DIR}/scripts/destroy.sh"

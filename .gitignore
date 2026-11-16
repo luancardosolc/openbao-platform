@@ -5,6 +5,7 @@
 .terraform.lock.hcl
 .tofu/
 .pytest_cache/
+__pycache__/
 .venv/
 *.retry
 *.log
@@ -21,3 +22,4 @@ backups/
 node_modules/
 dist/
 coverage/
+.wrangler/

@@ -1,25 +1,25 @@
 # Disaster Recovery
 
-## Recovery Path
+## Status: recovery has not been proven
 
-1. Provision a new server with `make deploy`.
-2. Restore the latest encrypted backup with `make restore`.
-3. Re-run OpenBao bootstrap validation.
-4. Confirm `/v1/sys/health` and UI reachability.
+The sample flow below is not approved for the current production host. `make deploy` provisions a generic instance and may create resources; `make restore` extracts files directly over `/`. Do not run either against the live Hetzner environment. The current repository model does not match the live server's operator user, firewall, or NetBird stack.
 
-## Failure Domains
+No offsite, verified backup or isolated restore has been demonstrated. RTO/RPO are therefore **unknown**, not the aspirational values from older examples.
 
-- Host loss
-- Persistent volume corruption
-- Misconfiguration introduced in automation
+## Recovery prerequisites
 
-## Recovery Objectives
+- Privileged inventory of OpenBao, NetBird, containers, volumes, configs, firewall, and secret dependencies.
+- Encrypted, app-consistent backup outside the Hetzner VPS, plus a separate recovery key path.
+- Working Hetzner console/NetBird/SSH access and documented, tested operator identities.
+- A disposable isolated Ubuntu environment to restore and exercise both applications.
+- Verified console access and an approved maintenance/recovery window before any production restart or restore.
 
-- RTO: under 1 hour with credentials and backup passphrase available
-- RPO: 24 hours under the default daily backup schedule
+## Drill acceptance
 
-## Preconditions
+1. Restore to an isolated host/VM; never overlay production paths.
+2. Verify OpenBao initialized/unsealed state and test-data read/write using a scoped temporary credential.
+3. Verify NetBird management UI, API and a test peer connection.
+4. Record actual restore duration, recovery point age, failures, CPU/RAM/disk overhead, and cleanup.
+5. Update the backup and health checks with the evidence; set RTO/RPO only after Luan approves them.
 
-- Provider credentials available
-- SSH key access available
-- Backup encryption passphrase available
+See [backup strategy](backup-strategy.md) and the current implementation record at `C:\Users\luanc\projects\projects-knowledge-base\wiki\central-pesquisas-2026-10-26\hetzner-implementacao-2026-10-27.md`.
