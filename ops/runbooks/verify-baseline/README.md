@@ -17,6 +17,7 @@ O script faz `shred` do arquivo do token e do header no `trap EXIT`. Ajuste `EXP
 ## Limpeza do bootstrap (16/11/2026, 22:42 BRT)
 
 `/opt/openbao/bootstrap/` foi removida do servidor:
+
 - `docker-compose.yml` copiado para `docker-compose.yml.bak-20261116-2242` (sha256 `7aad28cccfb3…`) e o volume `/opt/openbao/bootstrap:/openbao/bootstrap` removido; `docker compose config -q` ok; `up -d --force-recreate openbao`.
 - Unseal com `Invoke-OpenBaoUnseal.ps1` (sealed=false, health=200) e baseline acima = `BASELINE_OK`.
 - `bootstrap.json.enc` (912 B, sha256 `dc7e00a944e0…`): `shred -u`. Backup no Bitwarden `OpenBao prod / bootstrap.json.enc antigo base64 (2026-11-15)` conferido antes (base64 1216 chars → 912 B, mesmo sha256).

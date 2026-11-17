@@ -52,6 +52,7 @@ bao server -config=/openbao/config -dev-root-token-id= -dev-listen-address=0.0.0
 ```
 
   Ou seja: há **flags de modo dev** no processo, mesmo existindo `openbao.hcl` com `storage "file"` (`path = "/openbao/file"`, bind do host `/opt/openbao/data`), `ui = true`, TLS ligado (`/openbao/tls/openbao.crt` e key), `listener` em `0.0.0.0:8200` / cluster `0.0.0.0:8201`, `api_addr = https://46.224.228.253:8200`.
+
 - **Ponto crítico:** modo dev costuma manter dados **em memória**. O `openbao.hcl` sugere storage persistente em arquivo. Você **precisa confirmar o que está de fato em uso** (dev in-memory vs file storage) antes de reiniciar ou trocar o comando. Se os dados vivos estiverem só na memória, um restart mal feito **apaga o cofre**.
 - Arquivo de bootstrap no host: **`/opt/openbao/bootstrap/bootstrap.json`** (não está na raiz `/opt/openbao/bootstrap.json`; o diretório `bootstrap` é volume bind em `/openbao/bootstrap`). Contém `unseal_keys_b64` (5 shares), `unseal_keys_hex`, `unseal_shares` / `unseal_threshold`, `recovery_keys_*` e **`root_token`**. Os valores **nunca** devem aparecer em parecer, log, chat ou commit.
 - UFW: `8200/tcp` DENY de anywhere e ALLOW de `10.100.0.0/16`; sem regra para `8201`. `DOCKER-USER` está vazia; o DNAT do Docker publica 8200/8201. O **Cloud Firewall** hoje não tem 8200/8201 (sondas externas deram timeout); mesmo assim o bind em `0.0.0.0` é inaceitável.
