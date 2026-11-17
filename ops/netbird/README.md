@@ -19,5 +19,6 @@ Token: item Bitwarden `NetBird / API token owner (2026-11-17)` (pasta Hetzner, P
   O substituto foi do DOM direto para o Bitwarden (sha256 diferente).
 - A primeira versao do script (Codex) caiu no array embrulhado do `Invoke-RestMethod` do PS 5.1 e criou 4 grupos com os dois peers
   (`pc-luan`, `openbao-server`, `pc-luan-openbao-8200`, `openbao-server-openbao-8200`). A policy foi corrigida para `admin-pc -> hetzner-vps`;
-  os 4 grupos ficaram sem uso e NAO foram apagados (apagar depende de autorizacao do Luan).
+  os 4 grupos ficaram sem uso.
+- 08:47 BRT: o Luan autorizou apagar os 4. `Remove-NetBirdGroups.ps1` (ids explicitos; recusa All/admin-pc/hetzner-vps; checa referencias em 9 endpoints: policies, routes, DNS, setup keys, users, posture checks, accounts, networks) -> `refs=0`, `GROUP_DELETED` x4, 2a execucao `GROUP_ABSENT` x4. Use `-CheckOnly` para simular.
 - Os logs locais com o PAT vazado foram redigidos com `Invoke-LeakRedaction.ps1 -DpapiValueFile` (.jsonl do Codex e `thread_history_1.sqlite`, troca de mesmo tamanho). Na nova varredura: 0.
