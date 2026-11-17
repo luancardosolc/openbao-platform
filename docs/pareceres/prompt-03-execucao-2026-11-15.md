@@ -110,7 +110,7 @@ Autorização: Luan, no chat do Zeca, "aprovo, só resolve logo" e "resolve vc".
 ### Itens no Bitwarden (pasta Hetzner), sem valores
 
 | Item | Conteúdo |
-|---|---|
+| --- | --- |
 | `OpenBao prod / bootstrap antigo (comprometido 2026-11-15)` | bootstrap antigo (inválido após o rekey) |
 | `OpenBao prod / bootstrap.json.enc antigo base64 (2026-11-15)` | `.enc` antigo em base64 |
 | `OpenBao prod / unseal+recovery (rekey 2026-11-15)` | 5 unseal keys novas (t=3) |
