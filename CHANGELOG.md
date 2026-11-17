@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-11-17 08:29 (BRT)
+- `ops/netbird/Set-NetBirdPolicy.ps1` + README: policy NetBird `pc-luan -> openbao 8200` (TCP 8200, `admin-pc -> hetzner-vps`, só ida), idempotente, só marcadores, `-CheckOnly`; PAT lido do Bitwarden em memória. Corrige a 1ª versão (array do PS 5.1, que criou grupos com os dois peers).
+- `workstation/hetzner-root/Invoke-LeakRedaction.ps1`: `-ValueMode Raw`, `-DpapiValueFile`, leitura de arquivos travados e troca de mesmo tamanho para `.sqlite`/`.db`. Usado para redigir o PAT vazado (revogado) dos logs do Codex.
+- `tests/test_netbird_policy.py` e `tests/test_leak_redaction.py`.
+
 ## 2026-11-16 22:48 (BRT)
 - Servidor: removida `/opt/openbao/bootstrap/` (volume do compose, `bootstrap.json.enc` e `bootstrap-openbao.sh` com `shred`); backup `docker-compose.yml.bak-20261116-2242`; recreate + unseal + baseline ok.
 - `ops/runbooks/verify-baseline/`: `verify-openbao-baseline.sh` (só marcadores `BASELINE_*`, token via `curl -H @arquivo` e `shred`) e runbook da limpeza.
