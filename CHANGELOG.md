@@ -4,7 +4,7 @@
 
 - CI: tflint via `terraform-linters/setup-tflint@v4` (o `install_linux.sh` do `curl | bash` passou a dar 404), `actions/setup-python@v5` e `pip install pytest pre-commit` (sem `--user`).
 - `make test`/`test-ops`: `python3 -m pytest -q tests`; `pytest.ini` com `pythonpath = .`.
-- Markdown: correções do markdownlint (linhas em branco em volta de listas e títulos, newline final, numeração em `prompt-03-openbao-rekey-seguro`, H1 na `proposal.md`).
+- Markdown: correções do markdownlint (linhas em branco em volta de listas e títulos, newline final, numeração em `prompt-03-openbao-rekey-seguro`, H1 na `proposal.md`; MD060 na tabela do `prompt-03-execucao`); `markdownlint-cli` fixado em 0.50.0 no CI.
 
 ## 2026-11-17 08:50 (BRT)
 

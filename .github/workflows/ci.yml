@@ -26,7 +26,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y shellcheck yamllint
-          npm install -g markdownlint-cli
+          npm install -g markdownlint-cli@0.50.0
           python3 -m pip install pytest pre-commit
       - name: Lint
         run: make lint
