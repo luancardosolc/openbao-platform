@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-11-17 08:50 (BRT)
+- `ops/netbird/Remove-NetBirdGroups.ps1`: apaga (idempotente) a lista explícita dos 4 grupos órfãos criados em 17/11 (`pc-luan`, `openbao-server`, `pc-luan-openbao-8200`, `openbao-server-openbao-8200`), depois de checar referências em 9 endpoints e recusar grupos protegidos. Executado: 4 apagados; policy 8200 e SSH intactas; curl 200.
+- `tests/test_netbird_remove_groups.py`.
+
 ## 2026-11-17 08:29 (BRT)
 - `ops/netbird/Set-NetBirdPolicy.ps1` + README: policy NetBird `pc-luan -> openbao 8200` (TCP 8200, `admin-pc -> hetzner-vps`, só ida), idempotente, só marcadores, `-CheckOnly`; PAT lido do Bitwarden em memória. Corrige a 1ª versão (array do PS 5.1, que criou grupos com os dois peers).
 - `workstation/hetzner-root/Invoke-LeakRedaction.ps1`: `-ValueMode Raw`, `-DpapiValueFile`, leitura de arquivos travados e troca de mesmo tamanho para `.sqlite`/`.db`. Usado para redigir o PAT vazado (revogado) dos logs do Codex.
