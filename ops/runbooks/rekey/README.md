@@ -48,6 +48,7 @@ shred -u /root/openbao-rekey-work/* /root/hzroot-* /tmp/rekey-openbao.sh
 ## 4. Root token novo e revogação do antigo
 
 Feito em 16/11, na ordem abaixo. Os comandos exatos não foram versionados; aqui está o procedimento equivalente:
+
 1. Com o root atual (arquivo root via `Invoke-HetznerBitwardenToRemoteFile.ps1`, header com `curl -H @arquivo`, nunca em argv): `POST /v1/auth/token/create-orphan` com `{"policies":["root"]}`. Grave o JSON em `/root/openbao-rekey-work/new-root.json` (modo 600).
 2. `Invoke-HetznerSecretToBitwarden.ps1 -Command 'cat /root/openbao-rekey-work/new-root.json' -ItemName 'OpenBao prod / root token (AAAA-MM-DD)'` e conferência com `cmp`.
 3. Com o token novo, `POST /v1/auth/token/revoke` no token antigo. Esperado: 204. Depois `lookup-self` com o antigo deve dar 403 e com o novo, 200 (marcadores).

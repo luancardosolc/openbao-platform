@@ -1,8 +1,11 @@
+# Proposta: openbao-remediacao
+
 ## Why
 
 O OpenBao do host `openbao-platform-prod-openbao` roda com flags de modo dev (`-dev-root-token-id=`, `-dev-listen-address=0.0.0.0:8200`), escuta em `0.0.0.0:8200/8201` via `docker-proxy` (o Docker contorna o UFW, e a cadeia `DOCKER-USER` está vazia) e tem `bootstrap.json` em texto puro no disco, com unseal keys e root token.
 
 Estado verificado em 15/11/2026 (somente leitura, sem token):
+
 - `GET /v1/sys/health` local: `initialized: true`, **`sealed: true`**, versão 2.2.0.
 - Um processo `dev` nunca fica selado. Logo, o armazenamento é persistente (arquivo), e as flags `-dev*` são resíduo. O serviço está **fora do ar** enquanto selado.
 - `/opt/openbao/data` e o compose não são legíveis pelo usuário `luan`. Não foi possível confirmar o conteúdo sem root.

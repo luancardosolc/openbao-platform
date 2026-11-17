@@ -61,7 +61,7 @@ em logs locais. Sem `-Apply` so conta. Com `-Apply`: copia `.pre-redact.bak`, tr
 Nunca imprime valores, so caminho e contagens.
 Desde 17/11: `-ValueMode Raw` (notes do item = 1 valor, ex. PAT) ou `-DpapiValueFile <arq>` (valor cifrado com DPAPI do usuario, util depois de trocar o item);
 arquivos travados sao lidos com FileShare.ReadWrite; `.sqlite`/`.db` usam troca de mesmo tamanho no lugar (confira com `PRAGMA integrity_check`).
+
 ## Fonte canonica
 
 A fonte canonica destes scripts e `C:\Users\luanc\projects\personal\openbao-platform\workstation\hetzner-root\` (versionado). `C:\Users\luanc\agent-tools\hetzner-root\` e a copia de execucao: altere no repo e copie para ca.
-

@@ -23,10 +23,10 @@ test:
 	./tests/infra-tests.sh
 	./tests/security-tests.sh
 	./tests/deployment-tests.sh
-	python3 -m unittest discover -s tests -p 'test_*.py' -v
+	python3 -m pytest -q tests
 
 test-ops:
-	python3 -m unittest discover -s tests -p 'test_*.py' -v
+	python3 -m pytest -q tests
 
 smoke:
 	./scripts/smoke-openbao.sh

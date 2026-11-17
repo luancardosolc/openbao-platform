@@ -15,6 +15,7 @@ curl.exe -sk -o NUL -w "%{http_code}" https://100.102.58.164:8200/v1/sys/health 
 Token: item Bitwarden `NetBird / API token owner (2026-11-17)` (pasta Hetzner, PAT do dono, 40 chars, validade 365 dias).
 
 ## Historico (17/11/2026)
+
 - 07:22 BRT: o primeiro PAT vazou na saida de uma ferramenta do Codex. Foi revogado e saiu da lista de tokens, e a API agora responde 404 a ele.
   O substituto foi do DOM direto para o Bitwarden (sha256 diferente).
 - A primeira versao do script (Codex) caiu no array embrulhado do `Invoke-RestMethod` do PS 5.1 e criou 4 grupos com os dois peers

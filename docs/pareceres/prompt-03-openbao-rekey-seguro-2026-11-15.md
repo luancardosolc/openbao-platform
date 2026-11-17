@@ -16,21 +16,21 @@ Tudo em `C:\Users\luanc\agent-tools\hetzner-root\`. Sessão Bitwarden via `Get-B
 
 1. **Comandos não secretos** (saída redigida; recusa `bootstrap.json`, `*.key` e arquivos `unseal*`):
 
-```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File C:\Users\luanc\agent-tools\hetzner-root\Invoke-HetznerRoot.ps1 -Command 'id'
-```
+   ```powershell
+   powershell -NoProfile -ExecutionPolicy Bypass -File C:\Users\luanc\agent-tools\hetzner-root\Invoke-HetznerRoot.ps1 -Command 'id'
+   ```
 
 2. **Qualquer coisa secreta** (captura só em memória, grava no Bitwarden, `bw sync`, confere SHA-256 em processo; imprime apenas `ITEM`, `BYTES`, `SHA256_PREFIX` de 8 caracteres e `OK`/`FAIL`):
 
-```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File C:\Users\luanc\agent-tools\hetzner-root\Invoke-HetznerSecretToBitwarden.ps1 -Command 'cat /opt/openbao/bootstrap/bootstrap.json' -ItemName 'OpenBao prod / bootstrap antigo (comprometido 2026-11-15)'
-```
+   ```powershell
+   powershell -NoProfile -ExecutionPolicy Bypass -File C:\Users\luanc\agent-tools\hetzner-root\Invoke-HetznerSecretToBitwarden.ps1 -Command 'cat /opt/openbao/bootstrap/bootstrap.json' -ItemName 'OpenBao prod / bootstrap antigo (comprometido 2026-11-15)'
+   ```
 
 3. **Trazer um item do Bitwarden para um arquivo só de root no servidor** (unseal/rekey no servidor, sem passar chaves pela tela; imprime apenas `PATH`, `BYTES`, `SHA256_PREFIX`, `OK`/`FAIL`). Depois use e faça `shred`:
 
-```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File C:\Users\luanc\agent-tools\hetzner-root\Invoke-HetznerBitwardenToRemoteFile.ps1 -ItemName 'OpenBao prod / unseal+recovery (rekey 2026-11-15)' -RemotePath /root/hzroot-keys-from-bw.json
-```
+   ```powershell
+   powershell -NoProfile -ExecutionPolicy Bypass -File C:\Users\luanc\agent-tools\hetzner-root\Invoke-HetznerBitwardenToRemoteFile.ps1 -ItemName 'OpenBao prod / unseal+recovery (rekey 2026-11-15)' -RemotePath /root/hzroot-keys-from-bw.json
+   ```
 
 A conferência que vale é o SHA-256 das notas do item (e o prefixo impresso). O anexo do Bitwarden é tentativa extra; se o plano não aceitar anexo, as notas verificadas bastam. Não tente “confirmar” o conteúdo imprimindo-o.
 

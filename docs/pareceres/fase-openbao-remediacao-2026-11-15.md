@@ -19,6 +19,7 @@ Sem a 3.1, não há backup. Sem backup, não há 3.2, 3.3 nem 3.4.
 ## Próximo passo (precisa de você)
 
 Uma das duas:
+
 1. **Você faz a 3.1 na sua máquina** com o PowerShell, usando o caminho já aprovado: abrir o `su` no servidor, copiar o conteúdo do `bootstrap.json` para um item novo no Bitwarden (pasta Hetzner) e conferir. Depois me avisa com o nome do item.
 2. **Você me autoriza** a fazer `su` com a senha do item, desde que eu use um mecanismo que não deixe a senha em comando ou log. Preciso que você confirme qual mecanismo aceita.
 
@@ -44,6 +45,7 @@ Depois da 3.1, a ordem continua pelo `tasks.md`: inventário com unseal, mudanç
 - **Tratar como comprometidos:** o root token e as cinco unseal keys (b64 e hex). A conversa pode ficar registrada.
 
 ### Mitigação necessária antes de qualquer uso do cofre
+
 1. Não desselar o cofre com as chaves antigas. Ele continua selado.
 2. Fazer `operator rekey` para gerar novas unseal keys, com as antigas como threshold, e gravar as novas no Bitwarden.
 3. Depois do unseal com as novas, gerar um root token novo e revogar o antigo.
@@ -55,6 +57,7 @@ Aguardo autorização do Luan para o passo 2.
 ## Remediação executada (BRT, 16/11/2026)
 
 O passo a passo, com evidências, está em `pareceres/prompt-03-execucao-2026-11-15.md`, seção "Execução final (16/11/2026)". Resumo:
+
 - Rekey feito (5 shares, t=3). Chaves antigas vazadas invalidadas. Chaves novas no Bitwarden (`OpenBao prod / unseal+recovery (rekey 2026-11-15)`, conferidas byte a byte).
 - Root token novo (`OpenBao prod / root token (2026-11-16)`), gravado antes da revogação. Antigo revogado (204; lookup 403).
 - `bootstrap.json` em texto puro apagado com `shred`.

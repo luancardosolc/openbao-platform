@@ -1,15 +1,24 @@
 # Changelog
 
+## 2026-11-17 10:05 (BRT)
+
+- CI: tflint via `terraform-linters/setup-tflint@v4` (o `install_linux.sh` do `curl | bash` passou a dar 404), `actions/setup-python@v5` e `pip install pytest pre-commit` (sem `--user`).
+- `make test`/`test-ops`: `python3 -m pytest -q tests`; `pytest.ini` com `pythonpath = .`.
+- Markdown: correções do markdownlint (linhas em branco em volta de listas e títulos, newline final, numeração em `prompt-03-openbao-rekey-seguro`, H1 na `proposal.md`).
+
 ## 2026-11-17 08:50 (BRT)
+
 - `ops/netbird/Remove-NetBirdGroups.ps1`: apaga (idempotente) a lista explícita dos 4 grupos órfãos criados em 17/11 (`pc-luan`, `openbao-server`, `pc-luan-openbao-8200`, `openbao-server-openbao-8200`), depois de checar referências em 9 endpoints e recusar grupos protegidos. Executado: 4 apagados; policy 8200 e SSH intactas; curl 200.
 - `tests/test_netbird_remove_groups.py`.
 
 ## 2026-11-17 08:29 (BRT)
+
 - `ops/netbird/Set-NetBirdPolicy.ps1` + README: policy NetBird `pc-luan -> openbao 8200` (TCP 8200, `admin-pc -> hetzner-vps`, só ida), idempotente, só marcadores, `-CheckOnly`; PAT lido do Bitwarden em memória. Corrige a 1ª versão (array do PS 5.1, que criou grupos com os dois peers).
 - `workstation/hetzner-root/Invoke-LeakRedaction.ps1`: `-ValueMode Raw`, `-DpapiValueFile`, leitura de arquivos travados e troca de mesmo tamanho para `.sqlite`/`.db`. Usado para redigir o PAT vazado (revogado) dos logs do Codex.
 - `tests/test_netbird_policy.py` e `tests/test_leak_redaction.py`.
 
 ## 2026-11-16 22:48 (BRT)
+
 - Servidor: removida `/opt/openbao/bootstrap/` (volume do compose, `bootstrap.json.enc` e `bootstrap-openbao.sh` com `shred`); backup `docker-compose.yml.bak-20261116-2242`; recreate + unseal + baseline ok.
 - `ops/runbooks/verify-baseline/`: `verify-openbao-baseline.sh` (só marcadores `BASELINE_*`, token via `curl -H @arquivo` e `shred`) e runbook da limpeza.
 - `docker-compose.yml.j2`: sem o volume `/opt/openbao/bootstrap`.
@@ -17,6 +26,7 @@
 - `tests/test_verify_baseline.py`.
 
 ## 2026-11-16 (BRT)
+
 - `workstation/hetzner-root/`: helpers PowerShell de acesso root no Hetzner (su via PTY, saída redigida ou só marcadores), envio de segredos servidor ⇄ Bitwarden, unseal determinístico (`Invoke-OpenBaoUnseal.ps1`), redação de vazamentos locais (`Invoke-LeakRedaction.ps1`) e varredura de segredos (`Test-NoSecrets.ps1`). Vieram de `C:\Users\luanc\agent-tools\hetzner-root`, que segue como cópia de execução.
 - `ops/runbooks/rekey/`: runbook e `rekey-openbao.sh` parametrizado.
 - `openspec/changes/openbao-remediacao/` e `docs/pareceres/` (prompt-02, prompt-03, execução e parecer): vieram de `conectores/whatsapp-business-mcp`.

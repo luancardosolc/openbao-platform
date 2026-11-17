@@ -17,15 +17,17 @@ jobs:
           node-version: "20"
       - name: Install OpenTofu
         uses: opentofu/setup-opentofu@v1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install TFLint
+        uses: terraform-linters/setup-tflint@v4
       - name: Install linting tools
         run: |
           sudo apt-get update
-          sudo apt-get install -y shellcheck yamllint python3-pip
+          sudo apt-get install -y shellcheck yamllint
           npm install -g markdownlint-cli
-          install_script_url="https://raw.githubusercontent.com/"
-          install_script_url+="terraform-linters/tflint/master/install_linux.sh"
-          curl -s "${install_script_url}" | bash
-          python3 -m pip install --user pre-commit
+          python3 -m pip install pytest pre-commit
       - name: Lint
         run: make lint
       - name: Validate
