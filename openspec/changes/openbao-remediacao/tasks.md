@@ -29,6 +29,7 @@ Ordem obrigatória. Não pular etapas. Cada tarefa marcada **[BLOQUEIA]** precis
 
 ## 3.4 Remover bootstrap do disco **[BLOQUEIA: só após 3.1–3.3 confirmadas]**
 - [x] `shred` em `/opt/openbao/bootstrap/bootstrap.json`. (16/11) Não apagar config, TLS nem storage.
+- [x] Remover o volume `/opt/openbao/bootstrap` do compose (backup `docker-compose.yml.bak-20261116-2242`), `shred` em `bootstrap.json.enc` (backup Bitwarden conferido por sha256) e `bootstrap-openbao.sh` (idêntico ao template versionado) e remover a pasta. Recreate + unseal + `BASELINE_OK`. (16/11, 22:42 BRT; `ops/runbooks/verify-baseline/`)
 
 ## 3.5 Verificação e parecer
 - [x] Sondas externas: 8200 e 8201 inacessíveis.
