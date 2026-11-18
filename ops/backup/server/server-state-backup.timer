@@ -1,0 +1,10 @@
+[Unit]
+Description=Backup noturno do estado do servidor (01:30 BRT = 04:30 UTC)
+
+[Timer]
+OnCalendar=*-*-* 04:30:00 UTC
+Persistent=true
+RandomizedDelaySec=120
+
+[Install]
+WantedBy=timers.target

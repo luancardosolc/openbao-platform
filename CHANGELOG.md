@@ -1,5 +1,14 @@
 # Changelog
 
+## 2026-11-18 08:45 (BRT)
+
+- Backup do estado (change `openspec/changes/backup-estado`): `workstation/backup/` (`Invoke-StateBackup.ps1` com modos Init/Backup/Check/RestoreTest/Freshness, `sqlite_snapshot.py`, `sqlite_check.py`, `statebackup.config.psd1`, `Register-StateBackupTasks.ps1`) com restic em dois repos (SFTP restrito no Hetzner via NetBird e OneDrive), retenção 7/4/12, check semanal, restore automático mensal e alerta MeuBot quando o último backup passa de 26h.
+- `workstation/manifest/Export-ReinstallManifest.ps1`: manifesto de reinstalação (winget, scoop, npm global, uv tools, pyenv, nvm, versões das CLIs, repos, tarefas agendadas). Entra em todo backup; a cópia de referência vai para a KB privada (este repo é público).
+- `ops/backup/server/`: usuário `statebackup` só SFTP (chroot, `from=` o IP NetBird do PC), timer `server-state-backup` 04:30 UTC (tar zstd cifrado com `age` só com a chave pública) e `openbao-restore-test.sh` (sobe o snapshot num container temporário em 127.0.0.1:18200, faz unseal, confere e destrói).
+- `ops/runbooks/restore-pc/README.md`: restore do PC do zero usando o manifesto.
+- Correções durante a execução: lote do `sftp` em arquivo sem BOM (o pipe do PS 5.1 injeta BOM), restore pela subárvore `snap:/C/Users/luanc` (restaurar `C:\` e `C:\Users` aplicava as ACLs originais na pasta temporária), exclusão de locks (`*.lock`, `LOCK`, `*-wal`, `*-shm`) porque os SQLite vão pela cópia consistente.
+- `tests/test_backup_estado.py`.
+
 ## 2026-11-17 10:05 (BRT)
 
 - CI: tflint via `terraform-linters/setup-tflint@v4` (o `install_linux.sh` do `curl | bash` passou a dar 404), `actions/setup-python@v5` e `pip install pytest pre-commit` (sem `--user`).
