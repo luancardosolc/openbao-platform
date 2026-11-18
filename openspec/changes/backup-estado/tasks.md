@@ -5,4 +5,4 @@
 - [x] Scripts do PC (backup, SQLite, manifesto, tarefas)
 - [x] Primeiro snapshot nos dois repos
 - [x] Testes de restore (PC e OpenBao temporário)
-- [ ] Proteção contra exclusão da VPS (depende de token Hetzner com escrita)
+- [x] Proteção contra exclusão da VPS: `delete=true` e `rebuild=true` em 18/11 09:58 BRT, com o token `zeca-protection-2026-11-18` (escrita, guardado só no Bitwarden)

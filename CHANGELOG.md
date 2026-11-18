@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-11-18 09:58 (BRT)
+
+- VPS `openbao-platform-prod-openbao`: proteção contra exclusão e rebuild ligada pela API (`change_protection`, GET confirma `delete=true` e `rebuild=true`). O token de escrita `zeca-protection-2026-11-18` foi criado no console e foi direto para o Bitwarden. `openspec/changes/backup-estado/tasks.md` fechado.
+
 ## 2026-11-18 08:45 (BRT)
 
 - Backup do estado (change `openspec/changes/backup-estado`): `workstation/backup/` (`Invoke-StateBackup.ps1` com modos Init/Backup/Check/RestoreTest/Freshness, `sqlite_snapshot.py`, `sqlite_check.py`, `statebackup.config.psd1`, `Register-StateBackupTasks.ps1`) com restic em dois repos (SFTP restrito no Hetzner via NetBird e OneDrive), retenção 7/4/12, check semanal, restore automático mensal e alerta MeuBot quando o último backup passa de 26h.
