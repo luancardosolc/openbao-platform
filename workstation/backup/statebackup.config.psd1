@@ -67,6 +67,7 @@
   Keep = @{ Daily = 7; Weekly = 4; Monthly = 12 }
   FreshnessHours = 26
   Python = '{HOME}\.pyenv\pyenv-win\versions\3.13.1-win32\python.exe'
-  MeubotAlert = '{HOME}\projects\personal\meubot\alerta.py'
+  # Aviso no Discord (canal home do Hermes), independente do MeuBot. Chamada: python <script> "texto"
+  Alerta = '{HOME}\projects\personal\hermes-config\monitor\discord_alerta.py'
   ServerHost = 'statebackup-hz'
 }
