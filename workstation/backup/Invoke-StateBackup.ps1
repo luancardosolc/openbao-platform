@@ -10,13 +10,14 @@
     RestoreTest  restaura uma amostra de cada repo para uma pasta temporaria e confere: integrity_check dos SQLite
                  (Hermes state.db, MeuBot fila), hashes de arquivos que nao mudaram desde o snapshot (projects, .env,
                  codex, manifesto) e o tar do servidor (sha256 + age decrypt). Apaga a pasta no final.
-    Freshness    se o ultimo backup bom de algum repo tem mais de 26h, avisa no Telegram pelo alerta.py do MeuBot
+    Freshness    se o ultimo backup bom de algum repo tem mais de 26h, avisa no Discord (canal home do Hermes) pelo discord_alerta.py do hermes-config
+    AlertTest    manda um aviso de teste pelo mesmo caminho (confere o canal de alerta)
   Segredos: senha do restic e identidade age ficam em DPAPI (%LOCALAPPDATA%\StateBackup\*.dpapi, so este usuario);
   a fonte da verdade e o Bitwarden (pasta Hetzner, itens "Backup estado / ..."). Nada e impresso.
 #>
 [CmdletBinding()]
 param(
-  [ValidateSet('Init','Backup','Check','RestoreTest','Freshness')][string]$Mode = 'Backup',
+  [ValidateSet('Init','Backup','Check','RestoreTest','Freshness','AlertTest')][string]$Mode = 'Backup',
   [ValidateSet('All','Sftp','OneDrive')][string]$Repo = 'All',
   [switch]$NoAlert
 )
@@ -53,7 +54,7 @@ function Get-Status { if (Test-Path $StatusFile) { try { return (Get-Content $St
 function Set-StatusField($name, $value) { $s = Get-Status; $h = @{}; $s.PSObject.Properties | ForEach-Object { $h[$_.Name] = $_.Value }; $h[$name] = $value; [IO.File]::WriteAllText($StatusFile, ($h | ConvertTo-Json -Depth 6), (New-Object Text.UTF8Encoding($false))) }
 function Alert([string]$text) {
   if ($NoAlert) { Log "ALERTA (suprimido): $text"; return }
-  try { & $Py (Expand $cfgRaw.MeubotAlert) ("[backup] " + $text) *> $null; Log "ALERTA enviado: $text" } catch { Log "ALERTA falhou: $($_.Exception.Message)" }
+  try { $o = (& $Py (Expand $cfgRaw.Alerta) ("[backup] " + $text) 2>&1 | Select-Object -Last 1); if ($LASTEXITCODE -eq 0) { Log "ALERTA enviado ($o): $text" } else { Log "ALERTA falhou ($o): $text" } } catch { Log "ALERTA falhou: $($_.Exception.Message)" }
 }
 function Invoke-Rs([string]$repoKey, [string[]]$args2, [switch]$Json) {
   $r = $Repos[$repoKey]; $a = @('-r', $r.url) + $r.opts + $args2; if ($Json) { $a += '--json' }
@@ -208,6 +209,7 @@ switch ($Mode) {
   if (-not $allOk) { Alert 'teste de restore do backup falhou (ver log StateBackup)'; exit 1 }
   Log 'RT_OK'
 }
+'AlertTest' { Alert 'teste do canal de alerta (sem acao necessaria)' }
 'Freshness' {
   $s = Get-Status; $now = [DateTime]::UtcNow; $stale = @()
   foreach ($k in $Repos.Keys) {

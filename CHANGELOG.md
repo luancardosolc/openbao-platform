@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-11-18 12:05 (BRT)
+
+- StateBackup: o alerta saiu do Telegram/MeuBot e vai para o Discord (canal home do Hermes) por `hermes-config/monitor/discord_alerta.py` (chave `Alerta` no `statebackup.config.psd1`, no lugar de `MeubotAlert`). O log agora registra se o envio deu certo (id da mensagem) ou falhou. Novo modo `-Mode AlertTest` para conferir o canal.
+
 ## 2026-11-18 09:58 (BRT)
 
 - VPS `openbao-platform-prod-openbao`: proteção contra exclusão e rebuild ligada pela API (`change_protection`, GET confirma `delete=true` e `rebuild=true`). O token de escrita `zeca-protection-2026-11-18` foi criado no console e foi direto para o Bitwarden. `openspec/changes/backup-estado/tasks.md` fechado.
